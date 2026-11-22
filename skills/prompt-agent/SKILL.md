@@ -1,5 +1,6 @@
 ---
 name: prompt-agent
+private: false
 description: Compiles rough user input into precise, well-structured prompts for Claude Code (CLI agentic coding tool) or Cowork (desktop file/task automation). Use this skill whenever the user asks you to write, build, or refine a prompt — including "make a prompt for...", "write a prompt that...", "help me prompt Claude to...", "turn this into a prompt", or any description of a task they want to hand off to Claude Code or Cowork. Also trigger when the user wants to iterate on a prompt that didn't work well, or needs a prompt with clear scope, requirements, and success criteria. Prefer this skill over prompt-agent-haiku when the task is complex, multi-step, or involves code/repos/terminal work.
 ---
 

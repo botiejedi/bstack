@@ -1,5 +1,6 @@
 ---
 name: grill
+private: false
 description: Use when a request is vague, broad, or leans on placeholder quality words ("build me X", "make it good", "set up a system", "you're the expert"), when requirements are unstated or assumed, when you notice a gap between what was literally asked and what you would actually build, or when the user explicitly asks to be interviewed, grilled, or pinned down before work begins.
 ---
 

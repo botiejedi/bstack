@@ -1,5 +1,6 @@
 ---
 name: pelican
+private: false
 description: Operate an existing Pelican game-server panel and its Wings nodes (pelican.dev, the Pterodactyl fork) — health checks, power actions, logs and troubleshooting for "the game server". Routes deploys, server lifecycle and upgrades to pelican-deploy, pelican-servers and pelican-upgrade.
 triggers:
   - /pelican

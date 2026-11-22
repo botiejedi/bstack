@@ -1,5 +1,6 @@
 ---
 name: apple-reminders
+private: false
 description: Create, read, complete and edit tasks in Apple Reminders through the apple-events MCP. Use whenever the user says "remind me", "set a reminder", "add a reminder", "add to my list/to-do", "what's on my list", "what do I have due", or mentions Reminders at all — "remind me" ALWAYS means an Apple Reminders entry, never a Claude scheduled task, cron job or /loop. Also use when a conversation surfaces a concrete follow-up the user owns (renew a key, check a result, reply to someone) and they agree to track it.
 ---
 

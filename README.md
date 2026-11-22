@@ -31,7 +31,6 @@ Many skills expect a local tool or MCP server (for example the Apple skills use 
 | `deep-research-orchestration` | Scopes and routes multi-domain research with evidence |
 | `service-business-market-research` | Researches a local service business: territory, pricing, competitors |
 | `storm-watch` | Monitors official storm alerts with confirmed watch rules |
-| `firecrawl` | Scrapes, crawls and maps sites, including JS-rendered pages and PDFs |
 
 ### Obsidian vault workflow
 | Skill | What it does |
@@ -50,7 +49,6 @@ Many skills expect a local tool or MCP server (for example the Apple skills use 
 | `agent-context-management` | Strategies for long context windows |
 | `central-skill-registry` / `cross-agent-skill-distribution` | Keeps one skill library in sync across agents and verifies it |
 | `mods` | Recommends Claude Code plugins and writes usage guides |
-| `rule` | Toggles Claude Code state via `/rule <subcommand>` |
 | `ntfy` | Sends phone notifications through ntfy when something finishes |
 
 ### macOS apps

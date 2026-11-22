@@ -1,5 +1,6 @@
 ---
 name: yap
+private: false
 description: Turn rambling into clear agent prompts and briefs.
 version: 0.1.0
 author: botiejedi, Hermes Agent

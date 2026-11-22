@@ -1,5 +1,6 @@
 ---
 name: cross-agent-skill-distribution
+private: false
 description: Publish and verify one skill across agent runtimes.
 version: 0.1.0
 author: botiejedi, Hermes Agent
@@ -65,7 +66,11 @@ Completion criterion: every target has a known loader path, ownership status, an
 
 Write the canonical `SKILL.md` first. Keep its frontmatter and core behavior target-neutral. Put runtime-specific commands, provider quirks, or error transcripts in `references/` rather than forking the core instructions.
 
-Completion criterion: the canonical skill has a valid name, short trigger-oriented description, explicit scope, procedure, pitfalls, and verification criteria.
+**Privacy classification (on create and every revision):** Decide whether the skill contains sensitive details (credentials, private IPs, hostnames, internal URLs) or deployment-specific setup (personal paths, machine names, private-only plugins/tools, personal vault internals) that would not be useful publicly:
+- If **private/deployment-specific**: mark `private: true` in `SKILL.md` frontmatter (and include `private` in `tags:` if present) and store it in the private skills folder (`private-skills/`) excluded from public sync.
+- If **public/shareable**: mark `private: false` in `SKILL.md` frontmatter, keep all paths and folder layouts configurable, and store it in the public skills folder (`skills/`). Re-check this on every revision.
+
+Completion criterion: the canonical skill has a valid name, explicit `private` classification, short trigger-oriented description, explicit scope, procedure, pitfalls, and verification criteria.
 
 ### 3. Install or mirror deliberately
 

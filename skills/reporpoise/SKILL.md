@@ -1,5 +1,6 @@
 ---
 name: reporpoise
+private: false
 description: Use when starting a new project or a non-trivial feature, before planning or writing code — to find existing public GitHub projects, libraries, or tools that already solve the problem so you don't reinvent what already exists and probably works better. Also triggers on /reporpoise, "is there a library for this", "has someone already built this", "check if this exists", or before scaffolding something new.
 ---
 

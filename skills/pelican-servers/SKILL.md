@@ -1,5 +1,6 @@
 ---
 name: pelican-servers
+private: false
 description: Manage the lifecycle of game servers on a Pelican panel — eggs (import, fixing startup), allocations, creating, parking, redeploying and retiring servers, backups, and SteamCMD auto-update by cron.
 triggers:
   - /pelican-servers

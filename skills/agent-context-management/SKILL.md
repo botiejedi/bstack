@@ -1,5 +1,6 @@
 ---
 name: agent-context-management
+private: false
 description: "Use when managing long LLM context windows in agents."
 version: 0.1.0
 author: botiejedi, Hermes Agent

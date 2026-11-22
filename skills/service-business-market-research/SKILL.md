@@ -1,5 +1,6 @@
 ---
 name: service-business-market-research
+private: false
 description: "Use when researching a local service business."
 version: 0.1.0
 author: botiejedi, Hermes Agent

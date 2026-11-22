@@ -1,5 +1,6 @@
 ---
 name: garden
+private: false
 description: Report-only Obsidian vault health check (unresolved and alias-only wikilinks, frontmatter gaps, inbox age, Untitled and empty files, delta since the last report), written to <reviews folder>/Vault Health - YYYY-MM-DD.md
 disable-model-invocation: true
 triggers:

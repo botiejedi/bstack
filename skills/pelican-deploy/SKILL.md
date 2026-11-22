@@ -1,5 +1,6 @@
 ---
 name: pelican-deploy
+private: false
 description: Deploy a new Pelican panel or Wings node (pelican.dev), build a panel from a pinned commit when a release is broken, or migrate an existing Pterodactyl panel + Wings to Pelican side by side with a verified cutover.
 triggers:
   - /pelican-deploy

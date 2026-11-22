@@ -1,5 +1,6 @@
 ---
 name: board
+private: false
 description: "THE BOARD (after the Board in Control). Puts a decision, plan, draft, research or code change before 3 or 5 independent full-spectrum frontier models across providers. They evaluate the full rubric without role blinders, score it out of 10, peer-review and vote anonymously, and re-review revisions until satisfied or 3 rounds pass. MANDATORY TRIGGERS: 'board this', 'ask the board', 'convene the board', 'take it to the board', 'council this', 'run the council', 'war room this', 'pressure-test this', 'stress-test this', 'debate this'. A bare 'council' belongs to the council skill. STRONG TRIGGERS (only with a real decision or tradeoff): 'should I X or Y', 'which option', 'what would you do', 'is this the right move', 'validate this', 'get multiple perspectives', 'I can't decide', 'I'm torn between'. Do NOT trigger on simple yes/no questions, factual lookups, or a casual 'should I' with no real tradeoff ('should I use markdown' is not a board question). DO trigger on a genuine decision with stakes and options that the user wants pressure-tested."
 ---
 

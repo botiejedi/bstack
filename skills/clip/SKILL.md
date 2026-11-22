@@ -1,5 +1,6 @@
 ---
 name: clip
+private: false
 description: Snapshot conversations — save chat logs with summaries and connections
 triggers:
   - /clip

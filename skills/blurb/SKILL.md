@@ -1,5 +1,6 @@
 ---
 name: blurb
+private: false
 description: Classify and route thought dumps — parse unstructured braindumps into organized notes
 triggers:
   - /blurb

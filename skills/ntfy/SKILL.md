@@ -1,5 +1,6 @@
 ---
 name: ntfy
+private: false
 description: Use when the user asks to be notified, pinged, alerted or updated about something that finishes or changes later, in phrases such as "notify me", "let me know when", "update me when this changes", "ping me when it's done", "tell me if it fails", "send it to my phone", or "keep me posted". Also use when the user starts long work and says they are stepping away, and on /ntfy.
 ---
 

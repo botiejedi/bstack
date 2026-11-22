@@ -1,5 +1,6 @@
 ---
 name: apple-messages
+private: false
 description: Read, search and send iMessage/SMS through the local `imsg` CLI. Use when the user says "text X", "message X", "send X a text", "tell X that…" (meaning by text), "iMessage", "what did X text me", "any new texts", "check my messages", "find the text about Y", or asks about a conversation in the Messages app. Not for Slack/Discord/email.
 ---
 

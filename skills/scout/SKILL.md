@@ -1,5 +1,6 @@
 ---
 name: scout
+private: false
 description: Research topics and create briefs — queue for later or research immediately, optionally with a 30-day community pulse
 triggers:
   - /scout

@@ -1,5 +1,6 @@
 ---
 name: prompt-agent-haiku
+private: false
 description: Converts rough user input into a ready-to-paste prompt for Claude Code (CLI coding tool) or Cowork (desktop file automation). Use this skill whenever the user asks you to write a prompt, turn their idea into a prompt, or says things like "make a prompt for...", "write a prompt that...", "help me prompt Claude to...", "turn this into a prompt", or describes a task they want to hand off to Claude Code or Cowork. Trigger even if the request is vague or short — lean toward producing a prompt immediately.
 ---
 

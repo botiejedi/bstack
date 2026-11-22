@@ -1,5 +1,6 @@
 ---
 name: handoff
+private: false
 description: "Use when the user wants to hand off, checkpoint or save progress before compacting context, ending a session, or passing work to a fresh agent (\"make a handoff\", \"before we compact\", \"/handoff\"). Writes a complete, verified recovery document from live state, updates the pointers to it, then gives the user the exact /compact line to run."
 metadata:
   version: "1.0.0"

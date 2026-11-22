@@ -1,5 +1,6 @@
 ---
 name: reporpoise-review
+private: false
 description: Use when a candidate existing project, library, or repo has been identified (e.g. via /reporpoise) and you need to decide whether to adopt, fork, or reject it — reviewing whether its design, architecture, license, maintenance, and extensibility actually fit the intended idea before committing to build on it. Also triggers on /reporpoise-review, "is this repo a good fit", "should we use this library", "evaluate this project for our needs".
 ---
 

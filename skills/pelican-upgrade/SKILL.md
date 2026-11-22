@@ -1,5 +1,6 @@
 ---
 name: pelican-upgrade
+private: false
 description: Upgrade a Pelican panel, its Wings nodes, or the PHP under them — pre-flight checks for beta migration bugs, DB and APP_KEY backup, manual or scripted panel upgrade, checksum-verified Wings swap, verification and rollback.
 triggers:
   - /pelican-upgrade

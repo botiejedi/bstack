@@ -1,5 +1,6 @@
 ---
 name: grab
+private: false
 description: Pull vault context into conversation — search notes, indices, and project context
 triggers:
   - /grab

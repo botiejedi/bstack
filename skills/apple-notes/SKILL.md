@@ -1,5 +1,6 @@
 ---
 name: apple-notes
+private: false
 description: Read, search, create and edit notes in the Apple Notes app through the apple-notes MCP. Use when the user mentions Apple Notes, "the Notes app", "my iPhone note", a Quick Note, or a note they know lives in Notes (shopping list, checklist, voice memo transcript); when they ask to save, append or jot something "in Notes"; or when they ask to pull something out of Notes into the vault. Not for Obsidian/vault notes — in an Obsidian vault session a bare "note" means the vault unless the user says Notes/Apple Notes.
 ---
 

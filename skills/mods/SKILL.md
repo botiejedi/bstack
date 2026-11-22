@@ -1,5 +1,6 @@
 ---
 name: mods
+private: false
 description: Use when the user asks which Claude Code plugins or mods are popular, what they are missing, wants plugin recommendations, wants a set of plugins installed, or wants an infographic or guide on how and when to use plugins they just added. Also triggers on /mods.
 ---
 
@@ -22,7 +23,7 @@ Recommend popular Claude Code plugins the user does not already have, install th
    - its `ctx` is high and its benefit is narrow.
 3. **Recommend at most 5.** Show a table with plugin, installs and why it fits *this* user. Then list what you skipped and why, one line each. Ask which ones to install. Install nothing yet.
 4. **Install.** Run `claude plugin install <name>@<marketplace>` for each one.
-   - If the user has a managed plugin list or a security gate (an `agent-skills` manifest, for example), add the plugins there instead, or tell them the direct install skips that gate.
+   - If the user has a managed plugin list or a security gate (a skills/plugin manifest, for example), add the plugins there instead, or tell them the direct install skips that gate.
    - LSP plugins need the language server binary. Install it with `rustup component add rust-analyzer` or the README's equivalent, then check that the binary starts.
 5. **Read before you write.** For each plugin, read `~/.claude/plugins/cache/<marketplace>/<name>/<version>/`: the README, `commands/*.md`, `skills/*/SKILL.md` and `hooks/hooks.json`. Every command, event and env var in the guide must come from these files.
 6. **Build the guide.** Copy `guide-template.html` and replace its five plugins with the new ones:

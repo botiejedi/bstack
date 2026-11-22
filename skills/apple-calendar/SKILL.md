@@ -1,5 +1,6 @@
 ---
 name: apple-calendar
+private: false
 description: Read and write Apple Calendar events through the apple-events MCP. Use when the user asks what's on their calendar or whether they're free, asks to schedule/add/move/cancel an event, or when the conversation surfaces a concrete dated commitment — a meeting, appointment, flight, deadline, launch, market close/settlement date, maintenance window, certificate/API-key/trial/subscription expiry, or a tool or project requirement with a hard date. In those cases add it to Calendar proactively (after a duplicate check) and say so in one line.
 ---
 

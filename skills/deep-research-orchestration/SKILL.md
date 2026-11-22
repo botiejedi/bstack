@@ -1,5 +1,6 @@
 ---
 name: deep-research-orchestration
+private: false
 description: Scope and route multi-domain research with evidence.
 version: 0.1.0
 author: botiejedi, Hermes Agent

@@ -1,5 +1,6 @@
 ---
 name: storm-watch
+private: false
 description: Monitor official storm alerts with confirmed watch rules.
 version: 0.1.0
 author: botiejedi, Hermes Agent

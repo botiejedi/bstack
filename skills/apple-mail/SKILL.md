@@ -1,5 +1,6 @@
 ---
 name: apple-mail
+private: false
 description: Search, read, triage, draft and (only on explicit confirmation) send email in Apple Mail through the apple-mail MCP. Use whenever the user asks about their email or inbox — "check my mail", "any email from X", "find the email about Y", "what did Z say", "reply to", "draft an email", "forward this", "archive/flag/clean up my inbox", unread counts, attachments from an email, or looking up someone's email address.
 ---
 

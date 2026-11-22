@@ -1,5 +1,6 @@
 ---
 name: stash
+private: false
 description: Push conversation content to vault — save insights, decisions, and context
 triggers:
   - /stash
