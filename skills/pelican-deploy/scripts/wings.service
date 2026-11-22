@@ -1,0 +1,22 @@
+[Unit]
+Description=Pelican Wings Daemon
+After=docker.service tailscaled.service
+Requires=docker.service
+PartOf=docker.service
+
+[Service]
+User=root
+WorkingDirectory=/etc/pelican
+LimitNOFILE=4096
+PIDFile=/var/run/wings/daemon.pid
+# If servers publish on a tailnet IP: wait up to 60 s for tailscale0 to get an
+# address, then start anyway so LAN-only servers are never blocked.
+ExecStartPre=/bin/sh -c 'for i in $(seq 60); do ip -4 addr show tailscale0 2>/dev/null | grep -q inet && exit 0; sleep 1; done; exit 0'
+ExecStart=/usr/local/bin/wings
+Restart=on-failure
+StartLimitInterval=180
+StartLimitBurst=30
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

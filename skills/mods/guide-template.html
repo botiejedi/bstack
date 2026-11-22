@@ -1,0 +1,389 @@
+<title>Plugin Field Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a session-timeline matrix up top (when each plugin fires), then one scannable card per plugin (how to use it). */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --ink: #15202b;
+  --muted: #586472;
+  --line: #d4dbe2;
+  --chip: #e4e9ee;
+  --p-ctx: #0b7f74;
+  --p-rust: #b2440f;
+  --p-hook: #6146cf;
+  --p-sec: #be2f4a;
+  --p-setup: #2b62c9;
+  --f-display: "Familjen Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10161d; --surface: #18212b; --ink: #e6ebf0; --muted: #9aa7b4; --line: #2a3644; --chip: #222d39;
+    --p-ctx: #3cc4b6; --p-rust: #f08350; --p-hook: #a594ff; --p-sec: #ff7a93; --p-setup: #79a6ff;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10161d; --surface: #18212b; --ink: #e6ebf0; --muted: #9aa7b4; --line: #2a3644; --chip: #222d39;
+  --p-ctx: #3cc4b6; --p-rust: #f08350; --p-hook: #a594ff; --p-sec: #ff7a93; --p-setup: #79a6ff;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--f-body); font-size: 16px; line-height: 1.55;
+}
+.wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px;
+}
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1.3rem; font-weight: 700; }
+p { margin: 0; }
+.eyebrow { font-family: var(--f-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+code, .cmd { font-family: var(--f-mono); font-size: 0.85em; }
+code { background: var(--chip); padding: 0.1em 0.35em; border-radius: 4px; }
+
+header { display: grid; gap: 14px; }
+header .lede { color: var(--muted); max-width: 62ch; font-size: 1.05rem; }
+
+/* Start-here strip */
+.start {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 20px; display: grid; gap: 14px;
+}
+.start ol { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; }
+.start li::marker { font-family: var(--f-display); font-weight: 700; }
+
+/* Matrix */
+.section { display: grid; gap: 16px; }
+.section > p { color: var(--muted); max-width: 66ch; }
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; }
+th, td { padding: 12px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+tr:last-child td, tr:last-child th { border-bottom: 0; }
+thead th { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: 600; background: var(--chip); }
+tbody th { font-family: var(--f-display); font-size: 1rem; white-space: nowrap; }
+tbody th .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c); margin-right: 8px; vertical-align: 1px; }
+.hit {
+  display: inline-block; font-size: 0.82rem; line-height: 1.3;
+  padding: 4px 8px; border-radius: 6px;
+  color: var(--c); border: 1.5px solid var(--c);
+  background: color-mix(in srgb, var(--c) 10%, transparent);
+}
+.hit.solid { color: var(--surface); background: var(--c); }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.85rem; color: var(--muted); align-items: center; }
+.legend .hit { --c: var(--muted); }
+
+/* Cards */
+.cards { display: grid; gap: 20px; }
+.card {
+  --c: var(--ink);
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 22px; display: grid; gap: 18px;
+}
+.card h3::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--c); margin-right: 10px; vertical-align: 2px; }
+.card-head { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: baseline; justify-content: space-between; }
+.card-head .tagline { color: var(--muted); flex-basis: 100%; }
+.mode { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--chip); color: var(--c); font-weight: 600; white-space: nowrap; }
+.grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px 24px; }
+.grid4 > div { min-width: 0; display: grid; gap: 6px; align-content: start; }
+.label { font-family: var(--f-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c); font-weight: 600; }
+.grid4 ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; }
+.cmds { display: grid; gap: 8px; }
+.cmdrow {
+  display: flex; gap: 8px; align-items: stretch;
+  background: var(--chip); border-radius: 6px; min-width: 0;
+}
+.cmdrow .cmd { flex: 1; min-width: 0; padding: 8px 10px; overflow-wrap: anywhere; }
+.cmdrow .cmd .say { color: var(--muted); font-family: var(--f-body); font-style: italic; }
+.copy {
+  font-family: var(--f-mono); font-size: 0.72rem; border: 0; cursor: pointer;
+  background: transparent; color: var(--c); padding: 0 12px; border-left: 1px solid var(--line);
+  border-radius: 0 6px 6px 0;
+}
+.copy:hover { background: color-mix(in srgb, var(--c) 14%, transparent); }
+.copy:focus-visible, a:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+.warn { color: var(--ink); }
+.status { font-size: 0.85rem; color: var(--muted); }
+footer { color: var(--muted); font-size: 0.85rem; display: grid; gap: 6px; }
+@media (max-width: 480px) { .card { padding: 18px; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Claude Code · installed 2026-10-24</span>
+    <h1>Plugin Field Guide</h1>
+    <p class="lede">Five plugins you just added. Three run on their own once they're installed. Two only do something when you ask. This page shows when each one fires and what to type.</p>
+  </header>
+
+  <section class="start" aria-labelledby="start-h">
+    <h2 id="start-h">Start here: about 3 minutes</h2>
+    <ol>
+      <li><strong>Restart Claude Code.</strong> Plugins load at startup, so the session they were installed from can't see them yet.</li>
+      <li>In your main project, type <code>recommend automations for this project</code>. That runs claude-code-setup and shows you what else is worth adding.</li>
+      <li>The next time you correct Claude for the same thing twice, type <code>/hookify</code>.</li>
+    </ol>
+  </section>
+
+  <section class="section" aria-labelledby="when-h">
+    <h2 id="when-h">When each one fires</h2>
+    <p>Columns follow a single turn, left to right. A filled tag means it runs without you doing anything. An outlined tag means it runs because you asked.</p>
+    <div class="legend">
+      <span><span class="hit solid">filled</span> automatic</span>
+      <span><span class="hit">outlined</span> you trigger it</span>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Plugin</th>
+            <th scope="col">You send a prompt</th>
+            <th scope="col">Claude edits a file</th>
+            <th scope="col">Claude runs a command</th>
+            <th scope="col">Turn ends</th>
+            <th scope="col">Claude runs git commit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="--c: var(--p-ctx)">
+            <th scope="row"><span class="dot"></span>context7</th>
+            <td><span class="hit solid">library question → doc lookup</span></td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+          <tr style="--c: var(--p-rust)">
+            <th scope="row"><span class="dot"></span>rust-analyzer-lsp</th>
+            <td></td>
+            <td><span class="hit solid">.rs files: types, errors, references</span></td>
+            <td></td><td></td><td></td>
+          </tr>
+          <tr style="--c: var(--p-hook)">
+            <th scope="row"><span class="dot"></span>hookify</th>
+            <td><span class="hit">/hookify creates a rule</span><br><br><span class="hit solid">prompt rules</span></td>
+            <td><span class="hit solid">file rules</span></td>
+            <td><span class="hit solid">bash rules</span></td>
+            <td><span class="hit solid">stop rules</span></td>
+            <td></td>
+          </tr>
+          <tr style="--c: var(--p-sec)">
+            <th scope="row"><span class="dot"></span>security-guidance</th>
+            <td></td>
+            <td><span class="hit solid">pattern warning</span></td>
+            <td></td>
+            <td><span class="hit solid">diff review</span></td>
+            <td><span class="hit solid">deep review</span></td>
+          </tr>
+          <tr style="--c: var(--p-setup)">
+            <th scope="row"><span class="dot"></span>claude-code-setup</th>
+            <td><span class="hit">"recommend automations"</span></td>
+            <td></td><td></td><td></td><td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="how-h">
+    <h2 id="how-h">How to use each one</h2>
+    <div class="cards">
+
+      <article class="card" style="--c: var(--p-ctx)">
+        <div class="card-head">
+          <h3>context7</h3>
+          <span class="mode">automatic · MCP</span>
+          <p class="tagline">Fetches current, version-specific docs for a library, so Claude stops guessing at APIs from old training data.</p>
+        </div>
+        <div class="grid4">
+          <div>
+            <span class="label">Use it when</span>
+            <ul>
+              <li>You ask how to use a crate, framework or SDK</li>
+              <li>The library had a major release recently</li>
+              <li>Claude's code calls a function that doesn't exist</li>
+            </ul>
+          </div>
+          <div>
+            <span class="label">Type this</span>
+            <div class="cmds">
+              <div class="cmdrow"><span class="cmd">use context7: show the axum 0.8 Router API</span><button class="copy" type="button">copy</button></div>
+              <div class="cmdrow"><span class="cmd">use context7 to check the current clap derive syntax</span><button class="copy" type="button">copy</button></div>
+            </div>
+          </div>
+          <div>
+            <span class="label">You'll see</span>
+            <p>Claude calls <code>resolve-library-id</code>, then <code>query-docs</code>, and answers from what comes back.</p>
+          </div>
+          <div>
+            <span class="label">Watch out</span>
+            <p class="warn">Without a key it shares an anonymous rate limit. For your own quota, set <code>CONTEXT7_API_KEY</code> and restart. It covers public libraries, not your private configs.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--c: var(--p-rust)">
+        <div class="card-head">
+          <h3>rust-analyzer-lsp</h3>
+          <span class="mode">automatic · .rs files</span>
+          <p class="tagline">Gives Claude the same code intelligence your editor has: go to definition, find references, and compiler errors right after an edit.</p>
+        </div>
+        <div class="grid4">
+          <div>
+            <span class="label">Use it when</span>
+            <ul>
+              <li>You work in any Cargo project</li>
+              <li>You're refactoring and need every caller</li>
+              <li>You want type errors caught before <code>cargo build</code></li>
+            </ul>
+          </div>
+          <div>
+            <span class="label">Type this</span>
+            <div class="cmds">
+              <div class="cmdrow"><span class="cmd">find every caller of parse_config and rename it</span><button class="copy" type="button">copy</button></div>
+              <div class="cmdrow"><span class="cmd">what type does this function return?</span><button class="copy" type="button">copy</button></div>
+            </div>
+          </div>
+          <div>
+            <span class="label">You'll see</span>
+            <p>Claude looks up symbols through the language server instead of grepping, and fixes type errors before it reports the work as done.</p>
+          </div>
+          <div>
+            <span class="label">Watch out</span>
+            <p class="warn">Done already: the <code>rust-analyzer</code> component is installed through rustup (1.94.0). It needs a <code>Cargo.toml</code>, and indexing a large project the first time takes a minute. It does nothing in a non-Rust folder.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--c: var(--p-hook)">
+        <div class="card-head">
+          <h3>hookify</h3>
+          <span class="mode">you create · then automatic</span>
+          <p class="tagline">Turns "stop doing that" into a rule that warns or blocks. You write it in plain words, and it takes effect on the next tool call with no restart.</p>
+        </div>
+        <div class="grid4">
+          <div>
+            <span class="label">Use it when</span>
+            <ul>
+              <li>You've corrected the same behaviour twice</li>
+              <li>A command is too risky to leave to memory</li>
+              <li>You want a reminder at the end of each turn</li>
+            </ul>
+          </div>
+          <div>
+            <span class="label">Type this</span>
+            <div class="cmds">
+              <div class="cmdrow"><span class="cmd">/hookify Block pct destroy and zfs destroy</span><button class="copy" type="button">copy</button></div>
+              <div class="cmdrow"><span class="cmd">/hookify</span><button class="copy" type="button">copy</button></div>
+              <div class="cmdrow"><span class="cmd">/hookify:list</span><button class="copy" type="button">copy</button></div>
+              <div class="cmdrow"><span class="cmd">/hookify:configure</span><button class="copy" type="button">copy</button></div>
+            </div>
+          </div>
+          <div>
+            <span class="label">You'll see</span>
+            <p>A rule file at <code>.claude/hookify.&lt;name&gt;.local.md</code>. Bare <code>/hookify</code> scans the conversation for your corrections and suggests rules. Each rule has an event (<code>bash</code>, <code>file</code>, <code>stop</code>, <code>prompt</code>) and an action (<code>warn</code> or <code>block</code>).</p>
+          </div>
+          <div>
+            <span class="label">Watch out</span>
+            <p class="warn">Rules belong to one project. If the project's <code>.gitignore</code> doesn't exclude them, they get committed and reach every clone.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--c: var(--p-sec)">
+        <div class="card-head">
+          <h3>security-guidance</h3>
+          <span class="mode">automatic · 3 layers</span>
+          <p class="tagline">Reviews code Claude writes for injection, XSS, SSRF, hardcoded secrets, unsafe deserialization and path traversal.</p>
+        </div>
+        <div class="grid4">
+          <div>
+            <span class="label">Layers</span>
+            <ul>
+              <li><strong>Pattern warning</strong> on every edit, about 25 regexes, free</li>
+              <li><strong>Diff review</strong> when a turn ends, sent to Opus</li>
+              <li><strong>Deep review</strong> on <code>git commit</code>, which traces data flow across files</li>
+            </ul>
+          </div>
+          <div>
+            <span class="label">Add your own rules</span>
+            <p>Create <code>~/.claude/claude-security-guidance.md</code> and list rules in plain words. For example: "Credential values never go in a tracked note."</p>
+          </div>
+          <div>
+            <span class="label">You'll see</span>
+            <p>Claude sometimes fixes a finding before it replies. That means layer 2 caught something.</p>
+          </div>
+          <div>
+            <span class="label">Watch out</span>
+            <p class="warn">Layers 2 and 3 send diffs to Anthropic and use your plan's usage on every turn that changes code. If several agents share one worktree, set <code>ENABLE_STOP_REVIEW=0</code>. To turn the whole plugin off, set <code>SECURITY_GUIDANCE_DISABLE=1</code>.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" style="--c: var(--p-setup)">
+        <div class="card-head">
+          <h3>claude-code-setup</h3>
+          <span class="mode">on request · read-only</span>
+          <p class="tagline">Scans a project and recommends the top one or two automations in each category: MCP servers, skills, hooks, subagents and slash commands.</p>
+        </div>
+        <div class="grid4">
+          <div>
+            <span class="label">Use it when</span>
+            <ul>
+              <li>You start a new repo</li>
+              <li>Once per existing project, to find gaps</li>
+              <li>Before you hand-write another hook</li>
+            </ul>
+          </div>
+          <div>
+            <span class="label">Type this</span>
+            <div class="cmds">
+              <div class="cmdrow"><span class="cmd">recommend automations for this project</span><button class="copy" type="button">copy</button></div>
+              <div class="cmdrow"><span class="cmd">what hooks should I use?</span><button class="copy" type="button">copy</button></div>
+            </div>
+          </div>
+          <div>
+            <span class="label">You'll see</span>
+            <p>A short ranked list for each category, with the reason behind each pick.</p>
+          </div>
+          <div>
+            <span class="label">Watch out</span>
+            <p class="warn">It only recommends and never changes anything. You decide what to install. Some picks may duplicate what you already have.</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>All five come from <code>claude-plugins-official</code> and are installed at user scope. Install counts used to choose them came from the plugin catalog snapshot of July 2026.</p>
+    <p>To remove one, run <code>claude plugin uninstall &lt;name&gt;@claude-plugins-official</code>.</p>
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var text = btn.previousElementSibling.textContent.trim();
+    var done = function () { btn.textContent = 'copied'; setTimeout(function () { btn.textContent = 'copy'; }, 1400); };
+    var fallback = function () {
+      var r = document.createRange(); r.selectNodeContents(btn.previousElementSibling);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = 'selected';
+      setTimeout(function () { btn.textContent = 'copy'; }, 1400);
+    };
+    try {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } catch (e) { fallback(); }
+  });
+});
+</script>
